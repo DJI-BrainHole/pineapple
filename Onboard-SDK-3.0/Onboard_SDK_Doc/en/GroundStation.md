@@ -1,380 +1,467 @@
 # Ground Station
 
-This document is about Ground Station Function(Waypoint, Hotpoint, Follow Me). Data type and push data are introduced, more control command please refer to ground station part in [OPEN Protocol](OPENProtocol.md).
+This part is about Goundstation related functions(Waypoint, Hotpoint and Follow Me), which has been introduced briefly in the [OPEN Protocol](OPENProtocol.md#cmd-set-0x03-ground-station-cmd-set).
 
-## Waypoint
+In this document, we will introduce the command set and command id again at first, then show the detailed data structures of every command's data frmae. 
 
-### Data type: waypoint_mission_info_comm_t
-
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>length</td>
-        <td>count of waypoints</td>
-    </tr>
-    <tr>
-        <td>float32</td>
-        <td>vel_cmd_range</td>
-        <td>Maximum speed joystick input(2~15m)</td>
-    </tr>
-    <tr>
-        <td>float32</td>
-        <td>idle_vel</td>
-        <td>Cruising Speed (without joystick input, no more than vel_cmd_range)</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>action_on_finish</td>
-        <td>Action on finish<ul>
-            <li>0: no action</li>
-            <li>1: return to home</li>
-            <li>2: auto landing</li>
-            <li>3: return to point 0</li>
-            <li>4: infinite mode， no exit</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>mission_exec_num</td>
-        <td>Function execution times<ul>
-            <li>1: once</li>
-            <li>2: twice</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>yaw_mode</td>
-        <td>Yaw mode<ul>
-            <li>0: auto mode(point to next waypoint)</li>
-            <li>1: Lock as an initial value</li>
-            <li>2: controlled by RC</li>
-            <li>3: use waypoint's yaw(tgt_yaw)</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>trace_mode</td>
-        <td>Trace mode<ul>
-            <li>0: point to point, after reaching the target waypoint hover, complete waypoints action (if any), then fly to the next waypoint</li>
-            <li>1: Coordinated turn mode, smooth transition between waypoints, no waypoints task</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>action_on_rc_lost</td>
-        <td>Action on rc lost<ul>
-            <li>0: exit waypoint and failsafe</li>
-            <li>1: continue the waypoint</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>gimbal_pitch_mode</td>
-        <td>Gimbal pitch mode<ul>
-            <li>0: Free mode, no control on gimbal</li>
-            <li>1: Auto mode, Smooth transition between waypoints</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>hp_lati</td>
-        <td>Focus latitude (radian)</td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>hp_longti</td>
-        <td>Focus longitude (radian)</td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>hp_alti</td>
-        <td>Focus altitude (relative takeoff point height)</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>resv[15]</td>
-        <td>reserved</td>
-    </tr>
-</table>
-
-
-### Data Type: waypoint_comm_t
+## Command Set and Command Id
 
 <table>
     <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
+        <th>CMD Set</th>
+        <th>CMD Group</th>
+        <th>CMD ID</th>
         <th>Description</th>
     </tr>
     <tr>
-        <td>double</td>
-        <td>lati</td>
-        <td>waypoint latitude (radian)</td>
+        <th rowspan="19">0x03</th>
+        <th rowspan="8">Waypoint</th>
+        <th>0x10</th>
+        <th>upload waypoint task data</th>
     </tr>
     <tr>
-        <td>double</td>
-        <td>longti</td>
-        <td>waypoint longitude (radian)</td>
+        <th>0x11</th>
+        <th>upload the waypoint data with certain index</th>
     </tr>
     <tr>
-        <td>float</td>
-        <td>alti</td>
-        <td>waypoint altitude (relative takeoff point height)</td>
+        <th>0x12</th>
+        <th>start/stop waypoint mission</th>
     </tr>
     <tr>
-        <td>float</td>
-        <td>damping_dis</td>
-        <td>bend length (effective coordinated turn mode only)</td>
+        <th>0x13</th>
+        <th>pause/resume waypoint mission</th>
     </tr>
     <tr>
-        <td>int16_t</td>
-        <td>tgt_yaw</td>
-        <td>waypoint yaw (degree)</td>
+        <th>0x14</th>
+        <th>download waypoint task data</th>
     </tr>
     <tr>
-        <td>int16_t</td>
-        <td>tgt_gimbal_pitch</td>
-        <td>waypoint gimbal pitch</td>
+        <th>0x15</th>
+        <th>download certain waypoint data with given index</th>
     </tr>
     <tr>
-        <td>uint8_t</td>
-        <td>turn_mode</td>
-        <td>turn mode<ul>
-            <li>0: clockwise</li>
-            <li>1: counter-clockwise</li>
-        </ul></td>
+        <th>0x16</th>
+        <th>set waypoint mission idle velocity</th>
     </tr>
     <tr>
-        <td>uint8_t</td>
-        <td>resv[8]</td>
-        <td>reserved</td>
+        <th>0x17</th>
+        <th>read waypoint mission idle velocity</th>
     </tr>
     <tr>
-        <td>uint8_t</td>
-        <td>has_action</td>
-        <td>waypoint action flag<ul>
-            <li>0: no action</li>
-            <li>1: has action</li>
-        </ul>
-        </td>
+        <th rowspan="7">Hotpoint</th>
+        <th>0x20 </th>
+        <th>upload hotpoint data and start hotpoint mission</th>
     </tr>
     <tr>
-        <td>uint16_t</td>
-        <td>action_time_limit</td>
-        <td>waypoint action time limit unit:s</td>
+        <th>0x21</th>
+        <th>stop hotpoint mission</th>
     </tr>
     <tr>
-        <td>waypoint_action_comm_t</td>
-        <td>action</td>
-        <td>waypoint action</td>
+        <th>0x22</th>
+        <th>pause/resume hotpoint mission</th>
+    </tr>
+    <tr>
+        <th>0x23</th>
+        <th>set hotpoint mission idle velocity</th>
+    </tr>
+    <tr>
+        <th>0x24</th>
+        <th>set hotpoint mission radius</th>
+    </tr>
+    <tr>
+        <th>0x25</th>
+        <th>reset yaw of hotpoint mission</th>
+    </tr>
+    <tr>
+        <th>0x26</th>
+        <th>download hotpoint mission data</th>
+    </tr>
+    <tr>
+        <th rowspan="4">Follow me</th>
+        <th>0x30</th>
+        <th>upload follow me data and start</th>
+    </tr>
+    <tr>
+        <th>0x31</th>
+        <th>stop follow me mission</th>
+    </tr>
+    <tr>
+        <th>0x32</th>
+        <th>pause/resume follow me mission</th>
+    </tr>
+    <tr>
+        <th>0x33</th>
+        <th>upload the target data of follow me</th>
+    </tr>
+    <tr>
+        <th>0x02</th>
+        <th>Mission State Push Info</th>
+        <th>0x03</th>
+        <th>current mission state</th>
+    </tr>
+    <tr>
+        <th>0x02</th>
+        <th>Waypoint Mission Event Push Info</th>
+        <th>0x04</th>
+        <th>mission event</th>
     </tr>
 </table>
 
-### Data Type: waypoint_action_comm_t
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t :4</td>
-        <td>action_num</td>
-        <td>count of action</td>
-    </tr>
-    <tr>
-        <td>uint8_t :4</td>
-        <td>action_rpt</td>
-        <td>Repetitions</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>command_list[WP_ACTION_MAX_NUM]</td>
-        <td>command list</td>
-    </tr>
-    <tr>
-        <td>int16_t</td>
-        <td>command_param[WP_ACTION_MAX_NUM]</td>
-        <td>command param</td>
-    </tr>
-</table>
+## Data Structure
 
-### Commands
+### 0x03, 0x10: upload waypoint task data
+
+Request:
+```c
+typedef struct {
+
+    uint8_t length;//count of waypoints
+    float vel_cmd_range;//Maximum speed joystick input(2~15m)
+    float idle_vel;//Cruising Speed (without joystick input, no more than vel_cmd_range)
+    uint8_t action_on_finish;//Action on finish
+                            //0: no action
+                            //1: return to home
+                            //2: auto landing
+                            //3: return to point 0
+                            //4: infinite mode， no exit
+    uint8_t mission_exec_num;//Function execution times
+                            //1: once
+                            //2: twice
+    uint8_t yaw_mode;//Yaw mode
+                    //0: auto mode(point to next waypoint)
+                    //1: Lock as an initial value
+                    //2: controlled by RC
+                    //3: use waypoint's yaw(tgt_yaw)
+    uint8_t race_mode;//Trace mode
+                    //0: point to point, after reaching the target waypoint hover, complete waypoints action (if any), then fly to the next waypoint
+                    //1: Coordinated turn mode, smooth transition between waypoints, no waypoints task
+    uint8_t action_on_rc_lost;//Action on rc lost
+                            //0: exit waypoint and failsafe
+                            //1: continue the waypoint
+    uint8_t gimbal_pitch_mode;//Gimbal pitch mode
+                            //0: Free mode, no control on gimbal
+                            //1: Auto mode, Smooth transition between waypoints
+    double hp_lati;//Focus latitude (radian)
+    double hp_longti;//Focus longitude (radian)
+    float hp_alti;//Focus altitude (relative takeoff point height)
+    uint8_t resv[15];//reserved
+    
+}waypoint_mission_info_comm_t;
+```
+
+ACK: `uint8_t`, always be 0 no matter data valid or not.
+
+### 0x03, 0x11: upload the waypoint data with certain index
+
+Request:
+```c
+typedef struct {
+    double latitude;//waypoint latitude (radian)
+    double longitude;//waypoint longitude (radian)
+    float altitude;//waypoint altitude (relative altitude from takeoff point)
+    float damping_dis;//bend length (effective coordinated turn mode only)
+    int16_t tgt_yaw;//waypoint yaw (degree)
+    int16_t tgt_gimbal_pitch;//waypoint gimbal pitch
+    uint8_t turn_mode;//turn mode
+                    //0: clockwise
+                    //1: counter-clockwise
+    uint8_t resv[8];//reserved
+    
+    uint8_t has_action;//waypoint action flag
+                    //0: no action
+                    //1: has action
+    uint16_t action_time_limit;//waypoint action time limit unit:s
+    waypoint_action_comm_t action;//waypoint action
+
+} waypoint_comm_t
+
+```
+
+ACK:
+```c
+struct waypoint_upload_ack{
+    uint8_t ack;
+    uint8_t index;
+};
+```
+    
+
+For the waypoint action:
+
+```c
+typedef struct {
+    uint8_t action_num :4;//total number of actions
+    uint8_t action_rpt :4;//total running times
+    
+    uint8_t command_list[15];//command list, 15 at most
+    int16_t command_param[15];//command param, 15 at most
+
+}waypoint_action_comm_t
+```
+
+There are totally six kinds of actions as follows, which should be set in `command_list`.
 
 
 |Commands|Commands value|Command param|Description|
 |----|------|--------|----|
-|WP_ACTION_STAY|0|Hover time unit：millisecond|Just hover|
+|WP_ACTION_STAY|0|Hover time unit: **milli**second|Just hover|
 |WP_ACTION_SIMPLE_SHOT|1|N/A|Take a photo|
 |WP_ACTION_VIDEO_START|2|N/A|Start record|
 |WP_ACTION_VIDEO_STOP|3|N/A|Stop record|
 |WP_ACTION_CRAFT_YAW|4|YAW (-180~180)|Adjust the aircraft toward|
 |WP_ACTION_GIMBAL_PITCH|5|PITCH|Adjust gimbal pitch 0: head -90: look down|
 
+## 0x03, 0x12: start/stop waypoint mission
+
+Request:
+
+```c
+uint8_t start;//0-> start, 1-> cancel
+```
+
+ACK: `uint8_t`
+
+## 0x03, 0x13: pause/resume waypoint mission
+
+Request:
+
+```c
+uint8_t pause;//0-> pause, 1-> resume
+```
+
+ACK: `uint8_t`
 
 
-## Hotpoint
-### Data Type: hotpoint_mission_setting_t
+## 0x03, 0x14: download waypoint task
 
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>version</td>
-        <td>reserved</td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>hp_lati</td>
-        <td>Hotpoint latitude (radian)</td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>hp_lonti</td>
-        <td>Hotpoint longitude (radian)</td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>hp_alti</td>
-        <td>Hotpoint altitude (relative takeoff point height)</td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>hp_radius</td>
-        <td>Hotpoint radius (5m~500m)</td>
-    </tr>
-    <tr>
-        <td>float</td>
-        <td>angle_rate</td>
-        <td>Angle rate (0~30°/s)</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>is_clockwise</td>
-        <td>is clockwise<ul>
-            <li>0: counter-clockwise</li>
-            <li>1: clockwise</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>start_point</td>
-        <td>start point<ul>
-            <li>0: north to the hot point</li>
-            <li>1: south to the hot point</li>
-            <li>2: west to the hot point</li>
-            <li>3: east to the hot point</li>
-            <li>4: from current position to nearest point on the hot point</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>yaw_mode</td>
-        <td>yaw mode<ul>
-            <li>0: point to velocity direction</li>
-            <li>1: align to hot point inside</li>
-            <li>2: align to hot point ouside</li>
-            <li>3: controlled by RC</li>
-            <li>5: point to counter velocity direction</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>reserved[11]</td>
-        <td>reserved</td>
-    </tr>
-</table>
-## Follow Me
+Request:
 
-### Data Type: follow_me_mission_setting_t
+`uint8_t` with arbitrary value.
 
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>follow_mode</td>
-        <td>follow mode(reserved)</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>yaw_mode</td>
-        <td>yaw mode<ul>
-            <li>1: point to target</li>
-            <li>0: controlled by RC</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>init_latitude</td>
-        <td>init_latitude (radian)</td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>init_longitude</td>
-        <td>init_longitude (radian)</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>init_alti</td>
-        <td>reserved</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>init_mag_angle</td>
-        <td>reserved</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>follow_sensitivity</td>
-        <td>reserved</td>
-    </tr>
-</table>
+ACK:
 
-### Data Type: cmd_mission_follow_target_info
+```c
+struct waypoint_task_download_ack{
+    uint8_t ack;
+    waypoint_mission_info_comm_t wp_task;//defined in previous part
+};
+```
 
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>lati</td>
-        <td>Target latitude (radian)</td>
-    </tr>
-    <tr>
-        <td>double</td>
-        <td>lonti</td>
-        <td>Target longitude (radian)</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>alti</td>
-        <td>reserved</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>mag_angle</td>
-        <td>reserved</td>
-    </tr>
-</table>
----
-## CMD SET 0x02 CMD ID 0x03 Ground Station State
-State type is defined by first byte 'mission_type' in state. The 'mission_tpye' is defined with the following enum.
+## 0x03, 0x15: download a certain waypoint
+
+Request:
+
+```c
+uint8_t index;
+```
+
+ACK:
+
+```c
+struct waypoint_download_ack{
+    uint8_t ack;
+    uint8_t index;
+    waypoint_comm_t wp_data;//defined in previous
+};
+```
+
+## 0x03, 0x16: set idle velocity
+
+Request:
+
+```c
+float idle_veloctity;
+```
+
+ACK:
+
+```c
+struct waypoint_set_vel_ack{
+    uint8_t ack;
+    float idle_velcity;
+};
+```
+
+## 0x03, 0x17: read idle velocity
+
+Request:
+
+`uint8_t` with arbitrary value
+
+ACK:
+
+```c
+struct waypoint_read_vel_ack{
+    uint8_t ack;
+    float idle_velcity;
+};
+```
+
+
+## 0x03, 0x20: upload and start hotpoint task
+
+Request:
+
+```c
+typedef struct{
+    uint8_t version;//reserved, kept as 0
+    double hp_latitude;//Hotpoint latitude (radian)
+    double hp_longitude;//Hotpoint longitude (radian)
+    double hp_altitude;//Hotpoint altitude (relative altitude from takeoff point
+    double hp_radius;//Hotpoint radius (5m~500m)
+    float angle_rate;//Angle rate (0~30°/s)
+    uint8_t is_clockwise;// 0->fly in counter-clockwise direction, 1->clockwise direction
+    uint8_t start_point_position;//start point position
+                                //0: north to the hot point
+                                //1: south to the hot point
+                                //2: west to the hot point
+                                //3: east to the hot point
+                                //4: from current position to nearest point on the hot point
+    uint8_t yaw_mode;//yaw mode
+                    //0: point to velocity direction
+                    //1: face inside
+                    //2: face ouside
+                    //3: controlled by RC
+                    //4: same as the starting yaw
+    
+    uint8_t reserved[11];//reserved
+
+} hotpoint_mission_setting_t;
+```
+
+ACK:
+
+```c
+struct hotpoint_upload_ack{
+    uint8_t ack;
+    float max_radius;
+};
+```
+
+## 0x03, 0x21: stop hotpoint mission
+
+Request:
+
+`uint8_t` with arbitrary value
+
+ACK: `uint8_t`
+
+## 0x03, 0x22: pause hotpoint mission
+
+Request:
+
+```c
+uint8_t pause; //0->pause, 1->resume
+```
+
+ACK: `uint8_t`
+
+## 0x03, 0x23: set hotpoint idle velocity
+
+```c
+typedef struct{
+    uint8_t is_clockwise;
+    float idle_velocity;
+}hotpoint_set_vel_t;
+```
+
+ACK: `uint8_t`
+
+## 0x03, 0x24: set hotpoint radius
+
+Request:
+
+```c
+float radius;
+```
+
+ACK: `uint8_t`
+
+## 0x03, 0x25: reset hotpoint yaw
+
+Requset:
+
+`uint8_t` with arbitrary value
+
+ACK: `uint8_t`
+
+## 0x03, 0x26: download hotpoint task
+
+Request:
+
+`uint8_t` with arbitary value
+
+ACK:
+
+```c
+struct hotpoint_download_ack {
+    uint8_t ack;
+    hotpoint_mission_setting_t hotpoint_task;
+};
+```
+
+## 0x03, 0x30: upload and start follow me task
+
+Request:
+
+```c
+typedef struct{
+    uint8_t follow_mode;// follow mode(reserved), set as 0
+    uint8_t yaw_mode;//yaw mode
+                    //1: point to target
+                    //0: controlled by RC
+    double init_latitude;//initial position latitude (radian)
+    double init_longitude;//initial position longitude (radian)
+    uint16_t init_alti;//initial position altitude
+    uint16_t init_mag_angle;//reserved
+    uint8_t follow_sensitivity;//reserved, set as 0
+}follow_me_mission_setting_t;
+```
+
+ACK: `uint8_t`
+
+## 0x03, 0x31: stop follow me task
+
+Request:
+
+`uint8_t` with arbitary value
+
+ACK: `uint8_t`
+
+## 0x03, 0x32: pause/resume follow me task
+
+Request:
+
+```c
+uint8_t pause; //0->pause, 1->resume
+```
+
+ACK: `uint8_t`
+
+## 0x03, 0x33: update target position
+
+Request:
+ 
+```c
+typedef struct{
+    double latitude; //Target latitude (radian)
+    double longitude;//Target longitude (radian)
+    uint16_t altitude;//Target altitude
+    uint16_t mag_angle;//reserved
+
+}cmd_mission_follow_target_info;
+```
+
+NO ACK
+
+
+## 0x02, 0x03 Current Mission State Push Information 
+
+There are four kinds of mission states with the same struct size.
+
+Developers can separate them by their first bytes, i.e. `mission_type`.
+
+The 'mission_tpye' is defined with the following enum.
 ~~~c
 typedef enum
 {
@@ -385,272 +472,107 @@ typedef enum
     NAVI_MISSION_IOC,
 }navi_type;
 ~~~
-###Waypoint(NAVI_MISSION_WAYPOINT)
 
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>mission_type</td>
-        <td>mission type</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>target_waypoint</td>
-        <td>target waypoint</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>curr_state</td>
-        <td>current state</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>error_notification</td>
-        <td>error notification</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>reserved</td>
-        <td>reserved</td>
-    </tr>
-</table>
-###Hotpoint (NAVI_MISSION_HOTPOINT)
+waypoint mission push information
 
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>mission_type</td>
-        <td>mission type</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>mission_status</td>
-        <td>mission status<ul>
-            <li>0:init</li>
-            <li>1:running</li>
-            <li>2:paused</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>hp_exec_radius</td>
-        <td>distance to hotpoint：cm</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>reason</td>
-        <td>state</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>hp_exec_vel</td>
-        <td>surround linear speed * 10 and rounding</td>
-    </tr>
-</table>
-###Follow Me(NAVI_MISSION_FOLLOWME)
+```c
+typedef struct{
+    uint8_t mission_type; //mission type, should be NAVI_MISSION_WAYPOINT
+    uint8_t target_waypoint; //current target waypoint index
+    uint8_t current_state;//current state
+    uint8_t error_notification;//error notification
+    uint16_t reserved;//reserved
 
-<table>
-    <tr>6
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>mission_type</td>
-        <td>mission type</td>
-    </tr>
- <tr>
-        <td>uint8_t:4</td>
-        <td>mission_status</td>
-        <td>mission status<ul>
-            <li>0: init</li>
-            <li>1: following</li>
-            <li>2: waitting（The GPS level of UAV is lower than 5；The disconnection with target info has lasted over 6 seconds.）</li>
-        </ul></td>
-    </tr>
-        <tr>
-        <td>uint8_t:4</td>
-        <td>gps_level</td>
-        <td>GPS level<ul>
-            <li>0: GPS_SIGNAL_LEVEL_0</li>
-            <li>1: GPS_SIGNAL_LEVEL_1</li>
-            <li>2: GPS_SIGNAL_LEVEL_2</li>
-            <li>3: GPS_SIGNAL_LEVEL_3</li>
-            <li>4: GPS_SIGNAL_LEVEL_4</li>
-            <li>5: GPS_SIGNAL_LEVEL_5</li>
-        </ul></td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>drone2target_dist</td>
-        <td>the distance from UAV to target unit: cm</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>reason</td>
-        <td>error code</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>package_interval_time</td>
-        <td>package_interval_time unit: 0.02s</td>
-    </tr>
-</table>
-###Other State(NAVI_MODE_ATTI & NAVI_MISSION_IOC)
+} cmd_mission_waypoint_status_push_t;
+```
 
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>mission_type</td>
-        <td>mission type</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>last_mission_type</td>
-        <td>last mission type</td>
-    </tr>
-    <tr>
-        <td>uint8_t :1</td>
-        <td>is_broken</td>
-        <td>mission_type = NAVI_MODE_ATTI: <ul>mission automatically exits because conditions are not satisfied</ul>
-            mission_type = NAVI_MODE_IOC: <ul>IOC cannot be executed because conditions are not satisfied</ul></td>
-    </tr>
-    <tr>
-        <td>uint8_t :7</td>
-        <td>reserved1</td>
-        <td>reserved</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>reason</td>
-        <td>error code, when 'is_broken' is true.</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>reserved2</td>
-        <td>reserved</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>reserved3</td>
-        <td>reserved</td>
-    </tr>
-</table>
+hotpoint mission push information
 
+```c
+typedef struct{
+    uint8_t mission_type;// mission type, should be NAVI_MISSION_HOTPOINT
+    uint8_t mission_status;//mission status
+                        //0:init
+                        //1:running
+                        //2:paused
+    uint16_t hp_exec_radius; //distance to the hotpoint：cm
+    uint8_t reason;
+    uint8_t hp_exec_vel;//angular velocity in ground frame, degree * 10</td>
+} cmd_mission_hotpoint_status_push_t;
+```
 
+follow me mission push information
 
-## CMD SET 0x02 CMD ID 0x04 Waypoint Event
-First Byte 'incident_type' is the type of event. Event is defined with the following enum.
+```c
+typedef struct{
+    uint8_t mission_type;// mission type, should be NAVI_MISSION_FOLLOWM
+    uint8_t reserved_1;
+    uint16_t reserved_2;
+    uint16_t reserved_3;
+}cmd_mission_folowme_status_push_t;
+```
+
+the other two states(NAVI_MODE_ATTI & NAVI_MISSION_IOC)
+
+```c
+typedef struct{
+    uint8_t mission_type;
+    uint8_t last_mission_type;
+    uint8_t is_broken :1;
+    uint8_t reserved_1 :7;
+    uint8_t reason;
+    uint8_t reserved_2;
+    uint8_t reserved_3;
+}cmd_mission_default_status_push_t;
+```
+
+## 0x02, 0x04 Mission Event Push Information
+
+There are three kinds of waypoint mission events with the same struct size.
+
+Developers can separate them by their first bytes, i.e. `incident_type`.
+
+The 'incident_type' is defined with the following enum.
+
 ~~~c
 typedef enum
 {
     NAVI_UPLOAD_FINISH,
-    NAVI_MISSION_FINISH,
+    NAVI_MISSION_FINISH;
     NAVI_MISSION_WP_REACH_POINT,
 }incident_type;
 ~~~
-### Data upload(NAVI_UPLOAD_FINISH)
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>incident_type</td>
-        <td>incident type</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>is_mission_vaild</td>
-        <td>is mission vaild</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>estimated_run_time</td>
-        <td>estimated run time</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>reserved</td>
-        <td>reserved</td>
-    </tr>
-</table>
-### Waypoint finish(NAVI_MISSION_FINISH)
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>incident_type</td>
-        <td>incident type</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>repeat</td>
-        <td>action on finish</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>reserved</td>
-        <td>reserved</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>reserved2</td>
-        <td>reserved</td>
-    </tr>
-</table>
-### Reach waypoint(NAVI_MISSION_WP_REACH_POINT)
-<table>
-    <tr>
-        <th>Data Type</th>
-        <th>Data Name</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>incident_type</td>
-        <td>incident type</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>waypoint_index</td>
-        <td>waypoint index</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>curr_state</td>
-        <td>current state</td>
-    </tr>
-    <tr>
-        <td>uint8_t</td>
-        <td>reserved</td>
-        <td>reserved</td>
-    </tr>
-    <tr>
-        <td>uint16_t</td>
-        <td>reserved2</td>
-        <td>reserved</td>
-    </tr>
-</table>
+
+waypoint mission upload event push information
+
+```c
+typedef struct{
+    uint8_t incident_type;
+    uint8_t is_mission_valid;
+    uint16_t estimated_run_time;
+    uint16_t reserved;
+}cmd_mission_wp_upload_incident_t;
+```
+
+waypoint mission finish event push information
+
+```c
+typedef struct{
+    uint8_t incident_type;
+    uint8_t repeat;
+    uint16_t reserved_1;
+    uint16_t reserved_2;
+}cmd_mission_wp_finish_incident_t;
+```
+
+waypoint reached event push information
+
+```c
+typedef struct{
+    uint8_t incident_type;
+    uint8_t waypoint_index;
+    uint8_t current_state;
+    uint8_t reserved_1;
+    uint8_t reserved_2;
+}cmd_mission_wp_reached_incident_t;
+```
