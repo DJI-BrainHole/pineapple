@@ -495,9 +495,9 @@ typedef struct{
                         //0:init
                         //1:running
                         //2:paused
-    uint16_t hp_exec_radius; //distance to the hotpoint：cm
+    uint16_t hp_exec_radius; //distance to the hotpoint: cm
     uint8_t reason;
-    uint8_t hp_exec_vel;//angular velocity in ground frame, degree * 10</td>
+    uint8_t hp_exec_vel;//angular velocity in ground frame, degree * 10
 } cmd_mission_hotpoint_status_push_t;
 ```
 
