@@ -132,7 +132,7 @@ typedef struct {
                     //1: Lock as an initial value
                     //2: controlled by RC
                     //3: use waypoint's yaw(tgt_yaw)
-    uint8_t race_mode;//Trace mode
+    uint8_t trace_mode;//Trace mode
                     //0: point to point, after reaching the target waypoint hover, complete waypoints action (if any), then fly to the next waypoint
                     //1: Coordinated turn mode, smooth transition between waypoints, no waypoints task
     uint8_t action_on_rc_lost;//Action on rc lost
