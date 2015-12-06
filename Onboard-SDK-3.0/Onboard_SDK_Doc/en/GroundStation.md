@@ -576,3 +576,199 @@ typedef struct{
     uint8_t reserved_2;
 }cmd_mission_wp_reached_incident_t;
 ```
+
+## ACK Code
+<table>
+    <tr>
+        <th colspan="4">Common ACK</th>
+    </tr>
+    <tr>
+        <th>0x00</th>
+        <th>Success</th>
+        <th>0xD0</th>
+        <th>mode bar not in F</th>
+    </tr>
+    <tr>
+        <th>0xD1</th>
+        <th>not in Navi Mode</th>
+        <th>0xD2</th>
+        <th>IOC enabled</th>
+    </tr>
+    <tr>
+        <th>0xD3</th>
+        <th>mission not init</th>
+        <th>0xD4</th>
+        <th>missino not running</th>
+    </tr>
+    <tr>
+        <th>0xD5</th>
+        <th>mission running</th>
+        <th>0xD6</th>
+        <th>flight duration not satisfy</th>
+    </tr>
+    <tr>
+        <th>0xD7</th>
+        <th>mission with higher priority is running</th>
+        <th>0xD8</th>
+        <th>GPS health not satisfied</th>
+    </tr>
+    <tr>
+        <th>0xD9</th>
+        <th>low battery</th>
+        <th>0xDA</th>
+        <th>drone not in air when init</th>
+    </tr>
+    <tr>
+        <th>0xDB</th>
+        <th>invalid missino parameter</th>
+        <th>0xDC</th>
+        <th>execution condition not satisfied</th>
+    </tr>
+    <tr>
+        <th>0xDD</th>
+        <th>mission will fly through no-fly zone</th>
+        <th>0xDE</th>
+        <th>HOME point not recorded</th>
+    </tr>
+    <tr>
+        <th>0xDF</th>
+        <th>drone in no-fly zone</th>
+        <th>0xC0</th>
+        <th>altitude higher than max</th>
+    </tr>
+    <tr>
+        <th>0xC1</th>
+        <th>altitude lower than min</th>
+        <th>0xC7</th>
+        <th>too far</th>
+    </tr>
+    <tr>
+        <th>0xC8</th>
+        <th>drone not support groundstation functions</th>
+        <th>0xC9</th>
+        <th>too far from the hotpoint/first waypoint</th>
+    </tr>
+    <tr>
+        <th>0xCA</th>
+        <th>drone in beginner mode</th>
+        <th>0xF0</th>
+        <th>drone is taking off</th>
+    </tr>
+    <tr>
+        <th>0xF1</th>
+        <th>drone is landing</th>
+        <th>0xF2</th>
+        <th>drone is backing to home</th>
+    </tr>
+    <tr>
+        <th>0xF3</th>
+        <th>drone is arming</th>
+        <th>0xF4</th>
+        <th>invalid command</th>
+    </tr>
+    <tr>
+        <th>0xFF</th>
+        <th>unknown command/th>
+    </tr>
+    <tr>
+        <th colspan="4">Follow me ACK</th>
+    </tr>
+    <tr>
+        <th>0xB0</th>
+        <th>drone too far from mobile</th>
+        <th>0xB1</th>
+        <th>disconnect time too long</th>
+    </tr>
+    <tr>
+        <th>0xB2</th>
+        <th>gimbal pitch too large</th>
+    </tr>
+    <tr>
+        <th colspan="4">Hotpoint ACK</th>
+    </tr>
+    <tr>
+        <th>0xC2</th>
+        <th>invalid radius</th>
+        <th>0xC3</th>
+        <th>velocity too large</th>
+    </tr>
+    <tr>
+        <th>0xC4</th>
+        <th>invalid start point</th>
+        <th>0xC5</th>
+        <th>invalid yaw mode</th>
+    </tr>
+    <tr>
+        <th>0xC6</th>
+        <th>too far to back to route</th>
+        <th>0xA2</th>
+        <th>invalid float number</th>
+    </tr>
+    <tr>
+        <th>0xA3</th>
+        <th>invalid laittude/longitude</th>
+        <th>0xA6</th>
+        <th>invalid direction</th>
+    </tr>
+    <tr>
+        <th>0xA9</th>
+        <th>hotpoint already paused</th>
+        <th>0xAA</th>
+        <th>hotpoint not paused</th>
+    </tr>
+    <tr>
+        <th colspan="4">Waypoint ACK</th>
+    </tr>
+    <tr>
+        <th>0xE0</th>
+        <th>invalid mission data</th>
+        <th>0xE1</th>
+        <th>invalid waypoint data</th>
+    </tr>
+    <tr>
+        <th>0xE2</th>
+        <th>planned route too long</th>
+        <th>0xE3</th>
+        <th>flight route too long</th>
+    </tr>
+    <tr>
+        <th>0xE4</th>
+        <th>index larger than max number</th>
+        <th>0xE5</th>
+        <th>neighbor waypoints too close</th>
+    </tr>
+    <tr>
+        <th>0xE6</th>
+        <th>neighbor waypoints too far</th>
+        <th>0xE7</th>
+        <th>damping checking failed</th>
+    </tr>
+    <tr>
+        <th>0xE8</th>
+        <th>invalid action parameter</th>
+        <th>0xE9</th>
+        <th>waypoint upload not finished</th>
+    </tr>
+    <tr>
+        <th>0xEA</th>
+        <th>waypoint task not uploaded</th>
+        <th>0xEB</th>
+        <th>not all waypoint uploaded</th>
+    </tr>
+    <tr>
+        <th>0xEC</th>
+        <th>request is running</th>
+        <th>0xED</th>
+        <th>cannot pause cause not running</th>
+    </tr>
+    <tr>
+        <th colspan="4">IOC ACK</th>
+    </tr>
+    <tr>
+        <th>0xA0</th>
+        <th>too close to HOME point</th>
+        <th>0xA1</th>
+        <th>IOC type error</th>
+    </tr>
+    
+</table>
