@@ -149,7 +149,7 @@ typedef struct {
 }waypoint_mission_info_comm_t;
 ```
 
-ACK: `uint8_t`, always be 0 no matter data valid or not.
+ACK: `uint8_t`, always be 0 no matter data valid or not. Developers should check the parameter by themselves, otherwise error code 0xEA will appear when trying to upload waypoint data.
 
 ### 0x03, 0x11: upload the waypoint data with certain index
 
