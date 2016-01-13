@@ -144,7 +144,7 @@ typedef struct {
     double hp_lati;//Focus latitude (radian)
     double hp_longti;//Focus longitude (radian)
     float hp_alti;//Focus altitude (relative takeoff point height)
-    uint8_t resv[15];//reserved
+    uint8_t resv[16];//reserved, must be set as 0
     
 }waypoint_mission_info_comm_t;
 ```
