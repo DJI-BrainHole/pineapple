@@ -110,6 +110,8 @@ The Protocal Frame is the smallest unit for transmission. It contains the Header
   <td>CRC32 whole frame checksum</td>
 </tr>
 </table>
+
+Note: After CRC16 encryption, developers should update the `PADDING` and `LEN` part in your frame header before doing CRC32 encryption.
 <!-- >备注: 如果协议帧需要AES加密，应先对数据段进行加密，该过程会改变数据长度，需要更新帧头中*PADDING*字段及*LEN*字段。再对帧头部分进行CRC16校验，获得校验值后再对整个协议帧进行CRC32校验 -->
 ### Frame Type
 There are two types of frames.
@@ -636,7 +638,10 @@ Please make sure the following conditions have been met:
 
 * The 'enable API control' box is checked in the assistant software.
 * The IOC mode inside the DJI GO APP is off.
-* The mode selection bar of the remote controller is placed at the F position.(After aircraft powered-up, switch the mode selector to A or P and then turn to F )
+* The mode selection bar of the remote controller is placed at the F position.
+
+**IMPORTANT! afterwase the release of firmware 3.0, the drone will enter F mode logic directly if the mode bar is placed at F when power on, developers do not need to turn away then back to enter F mode logic as the way in firmware 2.3; Please pay attention to this change if you are upgrading from 2.3**  
+
 <table>
 <tr>
   <th>Data Type</th>
