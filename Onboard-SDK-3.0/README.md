@@ -1,5 +1,9 @@
 # DJI Onboard SDK Main Page | 主页
 
+If you are not new here and worked on our 2.3 firmware before, you are suggested to read [the release notes](ReleaseNotes.md)
+
+如果你是从2.3固件升级至3.1固件的开发者，我们建议你首先阅读[版本发布记录](ReleaseNotes.md)
+
 [English](#welcome-onboard-sdk-developers) | [中文](#欢迎onboard-sdk开发者)
 
 ## Welcome, Onboard SDK developers! 
