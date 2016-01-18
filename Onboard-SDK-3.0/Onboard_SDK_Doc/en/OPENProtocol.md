@@ -349,16 +349,16 @@ The execution of different CMDs needs an corresponding Authorization Level. A CM
 </tr>
 <tr>
   <td>0x16</td>
-  <td>Set cruising speed</td>
+  <td>Set idle speed</td>
   <td>2</td>
 </tr>
 <tr>
   <td>0x17</td>
-  <td>Get cruising speed</td>
+  <td>Get idle speed</td>
   <td>2</td>
 </tr>
 <tr>
-  <td rowspan="7">0x03<br>Ground Station CMD Set<br>Hotpoint</td>
+  <td rowspan="8">0x03<br>Ground Station CMD Set<br>Hotpoint</td>
   <td>0x20</td>
   <td>Start hotpoint</td>
   <td>2</td>
@@ -375,7 +375,7 @@ The execution of different CMDs needs an corresponding Authorization Level. A CM
 </tr>
 <tr>
   <td>0x23</td>
-  <td>Set cruising speed</td>
+  <td>Set idle speed</td>
   <td>2</td>
 </tr>
 <tr>
@@ -390,9 +390,13 @@ The execution of different CMDs needs an corresponding Authorization Level. A CM
 </tr>
 <tr>
   <td>0x26</td>
-  <td>Get hotpoint config info</td>
+  <td>Download hotpoint info</td>
   <td>2</td>
 </tr>
+<tr>
+   <td>0x27</td>
+   <td>Set Auto Radius</td>
+   <td>2</td>
 <tr>
   <td rowspan="4">0x03<br>Ground Station CMD Set<br>Follow Me</td>
   <td>0x30</td>
@@ -488,24 +492,17 @@ The execution of different CMDs needs an corresponding Authorization Level. A CM
 </tr>
 
 <tr>
-  <td rowspan="4">CMD Val</td>
+  <td rowspan="3">CMD Val</td>
   <td>0</td>
   <td>4</td>
   <td>app_id, app unique identifer</td>
 </tr>
 
 <tr>
-  <td>4</td>
-  <td>4</td>
-  <td>api_level, authorization level</td>
-</tr>
-
-<tr>
   <td>8</td>
   <td>4</td>
   <td>Fixed value:<ul>
-   <li>A3: 0x03006400</li>
-   <li>M100: 0x3000A00</li>
+   0x03010A00
   </ul></td>
 </tr>
 
@@ -869,8 +866,18 @@ For more info about Movement Control, please refer to [Control mode byte part in
 <tr>
   <td>6</td>
   <td>1</td>
-  <td>---</td>
-  <td>Fixed value, 0x80</td>
+  <td><ul>
+    <li>5 bit</li>
+    <li>1 bit</li>
+    <li>1 bit</li>
+    <li>1 bit</li>
+    </ul></td>
+  <td><ul>
+    <li>Reserved</li>
+    <li>Reset Yaw to Center</li>
+    <li>Ignore User Stick</li>
+    <li>Enable Control</li>
+    </ul></td>
 </tr>
 
 <tr>
@@ -1903,7 +1910,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
 </tr>
 </table>
 ### CMD Set 0x04 Sync signal CMD Set
-#### CMD ID 0x00 Set Sync signal output frequency
+#### CMD ID 0x00 Set synchronization signal frequency
 <table>
 <tr>
   <th>Data Type</th>
@@ -1929,7 +1936,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
   <td>N/A</td>
 </tr>
 </table>
-### Set 0x05 Virual RC CMD set
+### Set 0x05 Virtual RC CMD set
 
 For more info about virual RC, please refer to [Virtual RC](VirtualRC.md).  
 
