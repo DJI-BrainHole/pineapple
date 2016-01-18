@@ -32,6 +32,15 @@ Developers starting on firmware 3.1 should ignore this file and check out the do
 
 ## Broadcast Data Updates
 
+### New
+
+|CMD Set|CMD ID|Description|
+|-------|------|-----------|
+|0x02|0x03|Mission Status Push Info|
+|0x02|0x04|Mission Events Push Info|
+
+### Changed
+
 |Struct Changed|2.3|3.1|
 |--------------|---|---|
 |Time Stamp|`uint32_t`|`typedef struct`<br>`{`<br>&nbsp;&nbsp;`uint32_t time;`<br>&nbsp;&nbsp;`uint32_t asr_ts;`<br>&nbsp;&nbsp;`uint8_t sync_flag;`<br>`}sdk_time_stamp_t;`|
