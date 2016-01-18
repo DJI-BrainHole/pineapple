@@ -34,7 +34,7 @@ typedef struct
 
 ## Note
 
-1. The drone will exit *virtual RC* logic if there is a whole second your drone does not receive any `virtual_rc_data`. After exiting the *virtual RC*, if `if_switch_back_to_real_RC` is `1`, the drone will switch back to the real RC; if `if_switch_back_to_real_RC` is `0`, the drone will run into the *RC lost* logic directly, which is the same as the one when you lost your **real RC** connection.
+1. The drone will exit the *virtual RC* logic if there has been a whole second with no `virtual_rc_data` sent. After exiting the *virtual RC* logic, the drone will switch back to the real RC if `if_switch_back_to_real_RC` is `1`; otherwise, the drone will run into the *RC lost* logic directly, which is same as the one when you lost your **real RC** connection.
 
 2. The specific meaning of each channel is defined by developers himself and can be configured in DJI assistant.
 
@@ -47,5 +47,29 @@ typedef struct
     |Throttle|2|Joystick|[1024-660, 1024+660]|
     |Yaw|3|Joystick|[1024-660, 1024+660]|
     |MODE|6|Third gear switch|1552(P),1024(A),496(F)|
-    |GO_HOME|5|Button|N/A|
+    |GO_HOME|5|Button|Reserve|
     |GEAR|4|Second gear switch|1684(Up),1324(Down)|
+
+    Example:
+    
+    * To arm/disarm the drone
+    
+        ```
+        data[0] = 1024-660; (Roll)
+        data[1] = 1024-660; (Pitch)
+        data[2] = 1024-660; (Throttle)
+        data[3] = 1024+660; (Yaw)
+        data[4] = 1324; (Gear)
+        data[6] = 1552; (Mode)
+        ```
+        
+    * To move upwards
+    
+        ```
+        data[0] = 1024; (Roll)
+        data[1] = 1024; (Pitch)
+        data[2] = 1024+660; (Throttle)
+        data[3] = 1024; (Yaw)
+        data[4] = 1324; (Gear)
+        data[6] = 1552; (Mode)
+        ```
