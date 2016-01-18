@@ -108,7 +108,7 @@ We suggest developers do not use VERT_POS control mode indoor when your UAV does
 </div> -->
 
 
-**The input of HORI_POS is a position offset instead of an actual position. This des*ign aims to take both GPS flight and vision-based flight into consideration. If the developer wants to use GPS navigation, the GPS information sent by the UAV can be used to calculate position offset. While in vision-based flight application, developers should have their own positioning device (along with Gudiance or GPS to provide velocity measurement) to do position control. For example, [xuhao1 SDK package](https://github.com/xuhao1/dji_sdk/blob/master/src/modules/dji_services.cpp) implements a GPS-based position control where target position can be passed as GPS coordinate.*
+**The input of HORI_POS is a position offset instead of an actual position. This design aims to take both GPS flight and vision-based flight into consideration. If the developer wants to use GPS navigation, the GPS information sent by the UAV can be used to calculate position offset. While in vision-based flight application, developers should have their own positioning device (along with Gudiance or GPS to provide velocity measurement) to do position control. **
 
 
 
@@ -136,7 +136,7 @@ Attitude control accuracy is about 0.5 degrees, speed control accuracy of about 
 
 
 >xx presents horizontal frame，00 means ground frame，01 means body frame.  
->y presents stable frame，0 means non-stable mode，1 means stable mode. In stable mode, when 'HORI_VEL' or 'HORI_ATTI_TILT_ANG' is used, if input parameter is 0, the UAV will try to hold its position in horizontal.  
+>y presents stable flag，0 means non-stable mode，1 means stable mode. Stable mode only works in horizontal control.  
 
 
 
