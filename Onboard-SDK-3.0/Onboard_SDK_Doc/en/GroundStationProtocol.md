@@ -107,7 +107,12 @@ In this document, we will introduce the command set and command id again at firs
     </tr>
 </table>
 
+
 ## Data Structure
+
+**Note:** All reserved bytes in ground station structs should be set as 0, otherwise your commands may fail.
+
+---
 
 ### 0x03, 0x10: upload waypoint task data
 
@@ -149,7 +154,9 @@ typedef struct {
 }waypoint_mission_info_comm_t;
 ```
 
-ACK: `uint8_t`, always be 0 no matter data valid or not. Developers should check the parameter by themselves, otherwise error code 0xEA will appear when trying to upload waypoint data.
+ACK: `uint8_t`
+
+**Note:** The ACK of task upload is always 0. Developers should check the task parameter by themselves, otherwise error code 0xEA will appear when trying to upload waypoints' data.
 
 ### 0x03, 0x11: upload the waypoint data with certain index
 
@@ -210,6 +217,8 @@ There are totally six kinds of actions as follows, which should be set in `comma
 |WP_ACTION_VIDEO_STOP|3|N/A|Stop record|
 |WP_ACTION_CRAFT_YAW|4|YAW (-180~180)|Adjust the aircraft toward|
 |WP_ACTION_GIMBAL_PITCH|5|PITCH|Adjust gimbal pitch 0: head -90: look down|
+
+**Note: ** The controller will valid all waypoints' data together after the last one uploaded, which means if there exist at least one invalid waypoint information, the waypoint upload ACK of the last one will be with a error code. 
 
 ## 0x03, 0x12: start/stop waypoint mission
 
@@ -399,6 +408,19 @@ struct hotpoint_download_ack {
     hotpoint_mission_setting_t hotpoint_task;
 };
 ```
+
+## 0x03, 0x27：Enable Auto-Radiu mode
+
+Request:
+
+```c
+struct hotpoint_auto_radiu {
+    uint8_t on_off; //1->enable, 0->disable
+    int8_t rate;//radiu change rate
+};
+```
+
+ACK: `uint8_t`
 
 ## 0x03, 0x30: upload and start follow me task
 
