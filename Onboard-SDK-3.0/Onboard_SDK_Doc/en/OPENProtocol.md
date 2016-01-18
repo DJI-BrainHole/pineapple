@@ -385,7 +385,7 @@ The execution of different CMDs needs an corresponding Authorization Level. A CM
 </tr>
 <tr>
   <td>0x25</td>
-  <td>Reset nose</td>
+  <td>Reset yaw</td>
   <td>2</td>
 </tr>
 <tr>
@@ -958,7 +958,7 @@ For more info about Movement Control, please refer to [Control mode byte part in
     <th>Roll</th>
     <th>Pitch</th>
     <th>Yaw</th>
-    <th>Gimbal Follow UAV's nose</th>
+    <th>Gimbal Follow UAV's Head</th>
   </tr>
   <tr>
     <td>Follow</td>
@@ -1483,7 +1483,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
   <td>waypoint information</td>
 </tr>
 </table>
-#### CMD ID 0x16 Set cruising speed
+#### CMD ID 0x16 Set idle speed
 
 <table>
 <tr>
@@ -1499,7 +1499,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
   <td>0</td>
   <td>*</td>
   <td>float32</td>
-  <td>cruising speed</td>
+  <td>idle speed</td>
 </tr>
 <tr>
   <td>ACK Val</td>
@@ -1510,11 +1510,11 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
     <li>0x00: no error </li>
     <li>0xD1: need to obtain control authorization</li>
     <li>0xEA: waypoint info not upload </li>
-    <li>0xEE: cruising speed invalid</li>
+    <li>0xEE: idle speed invalid</li>
   </ul></td>
 </tr>
 </table>
-#### CMD ID 0x17 Get cruising speed
+#### CMD ID 0x17 Get idle speed
 
 <table>
 <tr>
@@ -1547,7 +1547,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
   <td>1</td>
   <td>2</td>
   <td>float32</td>
-  <td>cruising speed</td>
+  <td>idle speed</td>
 </tr>
 </table>
 #### CMD ID 0x20 Start hotpoint
@@ -1663,7 +1663,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
 </tr>
 </table>
 
-#### CMD ID 0x23 Set cruising speed
+#### CMD ID 0x23 Set idle speed
 
 <table>
 <tr>
@@ -1685,7 +1685,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
   <td>1</td>
   <td>4</td>
   <td>float32</td>
-  <td>cruising speed</td>
+  <td>idle speed</td>
 </tr>
 <tr>
   <td>ACK Val</td>
@@ -1722,7 +1722,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
 </tr>
 </table>
 
-#### CMD ID 0x25 Reset nose
+#### CMD ID 0x25 Reset yaw
 <table>
 <tr>
   <th>Data Type</th>
@@ -1748,7 +1748,7 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
   <td>N/A</td>
 </tr>
 </table>
-#### CMD ID 0x26 Get hotpoint config info
+#### CMD ID 0x26 Download hotpoint task info
 
 <table>
 <tr>
@@ -1784,6 +1784,44 @@ For more info about Ground Station, please refer to [Ground Station](GroundStati
   <td>hotpoint settings</td>
 </tr>
 </table>
+
+#### CMD ID 0x27 Enable auto radiu mode
+
+<table>
+<tr>
+  <th>Data Type</th>
+  <th>Offset(byte)</th>
+  <th>Length(byte)</th>
+  <th>Data Type</th>
+  <th>Description</th>
+</tr>
+
+<tr>
+  <td rowspan="2">CMD Val</td>
+  <td>0</td>
+  <td>1</td>
+  <td>uint8_t</td>
+  <td>enable(1:start, 0:stop)</td>
+</tr>
+
+<tr>
+  <td>1</td>
+  <td>1</td>
+  <td>int8_t</td>
+  <td>rate(rate of radiu change)</td>
+</tr>
+<tr>
+  <td>ACK Val</td>
+  <td>0</td>
+  <td>1</td>
+  <td>uint8_t</td>
+  <td>Return Code:<ul>
+    <li>0x00: Success</li>
+    <li>other error code</li>
+  </ul></td>
+</tr>
+</table>
+
 #### CMD ID 0x30 Start follow me
 <table>
 <tr>
