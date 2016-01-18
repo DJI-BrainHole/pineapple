@@ -393,7 +393,7 @@ Attitude control accuracy is about 0.5 degrees, speed control accuracy of about 
   <td rowspan="2">Source of Control</td>
   <td>cur_mov_control_mode</td>
   <td>uint8_t</td>
-  <td>current movment control mode value</td>
+  <td>current api control mode</td>
   <td>---</td>
   <td rowspan="2">0Hz</td>
 </tr>
@@ -416,7 +416,7 @@ Attitude control accuracy is about 0.5 degrees, speed control accuracy of about 
 
 </table>
 
-**current movment control mode value**
+**current api control mode**
 ~~~c
 typedef enum 
 {
@@ -439,7 +439,10 @@ typedef enum
   HORIZ_VEL_VERT_THR_YAW_RATE  = 16,
   HORIZ_POS_VERT_THR_YAW_ANG   = 17,
   HORIZ_POS_VERT_THR_YAW_RATE  = 18,
-  ATTI_CTRL_STOP               = 100,
+  GPS_ATII_CTRL_CL_YAW_RATE    = 97,
+  GPS_ATTI_CTRL_YAW_RATE       = 98,
+  ATTI_CTRL_YAW_RATE           = 99,
+  ATTI_CTRL_STOP               = 100
 }
 ~~~
 ### Raw/Fusion
