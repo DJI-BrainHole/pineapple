@@ -1160,7 +1160,7 @@ More info about Flight Data, please refer to [Flight Data part in Appendix](Appe
 
 <tr>
   <td>125</td>
-  <td>1</td>
+  <td>2</td>
   <td>Control device</td>
 </tr>
 
