@@ -150,25 +150,22 @@ Please comply with the local regulations during the development process and the 
 - [Ground Station][4]
 
 - [Virtual RC][5]
+- 
+- [Ground Station Programming Guide][6]
 
 - [Activation Guide][Activation]
 
 - [FAQ][FAQ]
-
-### Articles contributed by external developers:
-- [Onboard Device Selection Tips](http://bbs.dji.com/forum.php?mod=viewthread&tid=21106&extra=page%3D1%26filter%3Ddigest%26digest%3D1) (Chinese)
-
-- [Migrate the Onboard SDK API Library to STM32 and use STM32 to control M100](http://bbs.dji.com/forum.php?mod=viewthread&tid=19754&extra=page%3D1%26filter%3Ddigest%26digest%3D1) (Chinese)
-
-- [Onboard SDK & M100 FAQ (Unofficial)](http://bbs.dji.com/forum.php?mod=viewthread&tid=15991&extra=page%3D1%26filter%3Ddigest%26digest%3D1%26typeid%3D182) (Chinese)
 
 
 [0]:Onboard_SDK_Doc/en/OPENProtocol.md  
 [1]:Onboard_SDK_Doc/en/Appendix.md  
 [2]:Onboard_SDK_Doc/en/DataTransparentTransmission.md   
 [3]:Onboard_SDK_Doc/en/ProgrammingGuide.md  
-[4]:Onboard_SDK_Doc/en/GroundStation.md  
-[5]:Onboard_SDK_Doc/en/VirtualRC.md  
+[4]:Onboard_SDK_Doc/en/GroundStationProtocol.md  
+[5]:Onboard_SDK_Doc/en/VirtualRCProtocol.md 
+[6]:Onboard_SDK_Doc/en/GroundStationProgrammingGuide.md  
+
 [FAQ]:Onboard_SDK_Doc/en/FAQ_en.md   
 [Activation]:Onboard_SDK_Doc/en/ActivationGuide.md
 
@@ -308,6 +305,8 @@ Onboard SDK能够允许开发者选用任意合适的机载设备（需另购）
 
 - [地面站功能][cn4]   
 
+- [地面站编程指南][cn6]   
+
 - [虚拟遥控][cn5]   
 
 - [激活指南][cnActivation]
@@ -315,19 +314,12 @@ Onboard SDK能够允许开发者选用任意合适的机载设备（需另购）
 - [FAQ][cnFAQ]
 
 
-### 由外部开发者提供的文档:
-
-- [可以在M100上使用的机载设备及机载外部设备](http://bbs.dji.com/forum.php?mod=viewthread&tid=21106&extra=page%3D1%26filter%3Ddigest%26digest%3D1)
-
-- [把Onboard SDK移植到STM32并用此芯片对M100进行控制](http://bbs.dji.com/forum.php?mod=viewthread&tid=19754&extra=page%3D1%26filter%3Ddigest%26digest%3D1)
-
-- [关于M100 & Onboard SDK的问题FAQ (非官方)](http://bbs.dji.com/forum.php?mod=viewthread&tid=15991&extra=page%3D1%26filter%3Ddigest%26digest%3D1%26typeid%3D182)
-
 [cn0]:Onboard_SDK_Doc/cn/开放协议.md  
 [cn1]:Onboard_SDK_Doc/cn/附录.md  
 [cn2]:Onboard_SDK_Doc/cn/数据透传.md
 [cn3]:Onboard_SDK_Doc/cn/编程指南.md
-[cn4]:Onboard_SDK_Doc/cn/地面站功能.md
-[cn5]:Onboard_SDK_Doc/cn/虚拟遥控功能.md
+[cn4]:Onboard_SDK_Doc/cn/地面站协议.md
+[cn5]:Onboard_SDK_Doc/cn/虚拟遥控协议.md
+[cn6]:Onboard_SDK_Doc/cn/地面站编程指南.md
 [cnActivation]:Onboard_SDK_Doc/cn/激活指南.md
 [cnFAQ]:Onboard_SDK_Doc/cn/FAQ_cn.md
