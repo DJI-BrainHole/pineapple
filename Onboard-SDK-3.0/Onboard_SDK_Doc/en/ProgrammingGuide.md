@@ -1,6 +1,6 @@
-<del># Onboard SDK Programming Guide
+# Onboard SDK Programming Guide
 ---
-All structures and functions are implemented in `DJI_Pro_App.cpp`. For more details, please refer source code.
+All structures and functions are implemented in `/TODO/`. For more details, please refer source code.
 
 ---
 ## Callback mechanism
@@ -11,39 +11,17 @@ Activation function as an example:
 
 1.Define the callback function.  
 
-~~~c
-void cb_user_notice(unsigned short result)  
-{  
-    printf("Activation result is %d \r\n", result);  
-}  
-~~~  
+/TODO/
 
 2.Pass the name of callback function when you call to activate.
 
-~~~c
-DJI_Pro_Activate_API(&user_act_data, cb_user_notice);
-~~~
+/TODO/
 
 3.The meaning of return values(result) is explained in each commands in [OPEN Protocol](OPENProtocol.md#cmd-val--ack-val).
 
 ## Activation
 
-~~~c
-{
-    activate_data_t user_act_data; 
-
-    char key_buf[65] = "Input-your-app_key-here";   /* Input your app_key */
-    char app_bundle_id[32] = "1234567890";
-
-    user_act_data.app_id = 10086;                   /* Input your app_id */
-    user_act_data.app_api_level = 2;                /* Input your app_level */
-    user_act_data.app_ver = 0x02030A00; 
-    user_act_data.app_key = key_buf;  
-    strcpy((char*)user_act_data.app_bundle_id, app_bundle_id);
-
-    DJI_Pro_Activate_API(&user_act_data,NULL);
-}
-~~~
+/TODO/
 
 ## Obtain/Release Control Authorization
 
@@ -53,22 +31,13 @@ Before obtaining Control Authorization, please ensure that:
 * The IOC mode inside the DJI GO APP is off.
 * The mode selection bar of the remote controller is placed at the F position.
 
-~~~c
-/* Get controller */
-DJI_Pro_Control_Management(1,NULL);
-/* Release controller */
-DJI_Pro_Control_Management(0,NULL);
-~~~
+/TODO/
+
 ## Take off, Land and Return to home (RTH)
 The return value of this function please refer to [Request Switch Result](OPENProtocol.md#cmd-id-0x02-request-switch-result)(Below codes do not use callback function).  
-~~~c
-/* Take off */
-DJI_Pro_Status_Ctrl(4,NULL);
-/* Land */
-DJI_Pro_Status_Ctrl(6,NULL);
-/* Return to home */
-DJI_Pro_Status_Ctrl(1,NULL);
-~~~
+
+/TODO/
+
 ## Movement Control
 
 We recommend developers to send yours Movement Control commands in 50Hz frequency. Developers can implement that by `usleep(20000)`、`ros::Duration(1/50)` or other ways which depend on the develop environment.
@@ -82,23 +51,9 @@ We recommend developers to use `HORI_POS` mode in horizontal movement. More deta
 * Only when the GPS signal is good (health\_flag >=3)，horizontal position control (HORI_POS) related control modes can be used.
 * Only when GPS signal is good (health\_flag >=3)，or when Gudiance system is working properly with Autopilot，horizontal velocity control(HORI_VEL)related control modes can be used.
 
-~~~c
-{
-    attitude_data_t user_ctrl_data;
 
-    while(1)
-    {
-        user_ctrl_data.ctrl_flag = 0x40;                /* control_mode_byte */
-        user_ctrl_data.roll_or_x = 0;
-        user_ctrl_data.pitch_or_y = 2;
-        user_ctrl_data.thr_z = 0;
-        user_ctrl_data.yaw = 0;
-        DJI_Pro_Attitude_Control(&user_ctrl_data);  
+/TODO/
 
-        usleep(20000);                                  /* 50 Hz */ 
-    }
-}
-~~~
 ## Receive Flight Data
 If developers want to get Flight Data, please check corresponding item in DJI assistant software. And examine the coordinate of part data.
 
@@ -106,16 +61,15 @@ Developers need to declare correct structure variables to save Flight Data.
 
 Get quaternion as an example:  
 1. Declare quaternion struction
-~~~c
-    api_quaternion_data_t quat;
-~~~
+
+/TODO/
+
 
 2、Get the quaternion
-~~~c
-    DJI_Pro_Get_Quaternion(&quat);
-~~~
 
-Other data types and functions to obtain the corresponding data sent outside from autopilot, please refer `DJI_Pro_App.h`.
+/TODO/
+
+Other data types and functions to obtain the corresponding data sent outside from autopilot, please refer `/TODO/`.
 
 ## GPS to North-East Coordinate
 Convert GPS to North-East Coordinate. (GPS in radian，North-East Coordinate in meter)
@@ -160,25 +114,8 @@ void update_offset()
 
 
 /* Command thread */
-attitude_data_t user_ctrl_data;
 
-/* HORI_POS|VERT_VEL|YAW_RATE|HORI_GROUND_FRAME|YAW_GROUND_FRAME */
-user_ctrl_data.ctrl_flag = 0x88;
-user_ctrl_data.thr_z = 0;
-user_ctrl_data.yaw = 0;
-
-while(1)                                            
-{
-    update_offset();
-    if (/*offset is small enough*/)
-        break;
-    user_ctrl_data.roll_or_x = offset_x;
-    user_ctrl_data.pitch_or_y = offset_y;
-    
-    DJI_Pro_Attitude_Control(&user_ctrl_data);
-
-    usleep(20000);                                  /* 50 Hz */
-}
+/TODO/
 ~~~
-</del>
+
 
