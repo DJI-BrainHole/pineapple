@@ -48,7 +48,7 @@ In this document, we will introduce the command set and command id again at firs
         <th>read waypoint mission idle velocity</th>
     </tr>
     <tr>
-        <th rowspan="7">Hotpoint</th>
+        <th rowspan="8">Hotpoint</th>
         <th>0x20 </th>
         <th>upload hotpoint data and start hotpoint mission</th>
     </tr>
@@ -75,6 +75,10 @@ In this document, we will introduce the command set and command id again at firs
     <tr>
         <th>0x26</th>
         <th>download hotpoint mission data</th>
+    </tr>
+    <tr>
+        <th>0x27</th>
+        <th>enable auto-radiu mode</th>
     </tr>
     <tr>
         <th rowspan="4">Follow me</th>
@@ -409,7 +413,7 @@ struct hotpoint_download_ack {
 };
 ```
 
-## 0x03, 0x27：Enable Auto-Radiu mode
+## 0x03, 0x27：enable auto-radiu mode
 
 Request:
 
