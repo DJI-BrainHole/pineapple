@@ -76,6 +76,8 @@ Hotpoint is a functionality that allows the drone to circle around a given point
 
   After starting the follow me task, developers should keep telling the current position of target. i.e. update the position of target. Otherwise the drone will hover in the current position because it believes the target doesn't move.
 
+  /CODE/
+  
 3. Other Follow Me APIs
 
   There are severl other follow me APIs developers can make use of, such as pause, resume and stop the task. 
