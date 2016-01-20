@@ -50,7 +50,7 @@ Hotpoint is a functionality that allows the drone to circle around a given point
 
   Unlike waypoint task, the drone will execute hotpoint task immediately after the initialization step has been finished.
   
-  To initialize the hotpoint task, developers should set the radius, velocity and several other parameters then upload them.
+  To initialize the hotpoint task, developers should set the coordinate of point of interest, as well as the radius, velocity and several other parameters, then upload them.
   
   /CODE/
 
