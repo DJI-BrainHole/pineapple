@@ -1,8 +1,8 @@
 #Summary of changes from firmware 2.3 to firmware 3.1
 
-**Important**: Developers who update from 2.3 to 3.1 should update their programs (or the library) accordingly as well.
+**Important**: Developers who update from 2.3 to 3.1 should update their programs (or the library) accordingly as well. This file is an index about what has been changed. For the detail usages and definations of new content, please refer to its corresponding document.  
 
-Developers starting on firmware 3.1 should ignore this file and check out the document directly.
+Developers beginning from firmware 3.1 should ignore this file and check out the documentation directly.
 
 
 
