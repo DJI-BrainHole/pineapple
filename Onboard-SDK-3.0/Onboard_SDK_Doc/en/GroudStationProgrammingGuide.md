@@ -13,28 +13,65 @@ With the help of waypoint API, developers can make drone fly throught a given gr
 
   Before starting the waypoint task, developers should upload the coordinates information. There are two parts of uploading in waypoint logic, upload the required information of the whole task at first, then upload every waypoint data within this task. Developers can start the waypoint task if and only if both of the task and they waypoint details are uploaded.
   
-  To upload the task information, developers should 
+  To upload the task information, developers should initialize the following struct:
   
-  /CODE/
-  
-  
+  ```c
+  typedef struct WayPointInitData
+  {
+    uint8_t indexNumber;
+    float32_t maxVelocity;
+    float32_t idleVelocity;
+
+    uint8_t finishAction;
+    uint8_t executiveTimes;
+    uint8_t yawMode;
+    uint8_t traceMode;
+    uint8_t RCLostAction;
+    uint8_t gimbalPitch;
+    float64_t latitude;
+    float64_t longitude;
+    float32_t altitude;
+
+    uint8_t reserved[16];
+} WayPointInitData;
+```
 
 2. Upload Waypoint Data.
 
   After a succesfful update waypoint task, developers should updload the detail of every waypoint in this task one by one, with its corresponding index.
-  
-  /CODE/
-  
   Other than the basic parameters of waypoint, it is also possible to set actions when reaching the waypoint. 
   
-  /CODE/
+  ```c
+  typedef struct WayPointData
+  {
+    uint8_t index;
+
+    float64_t latitude;
+    float64_t longitude;
+    float32_t altitude;
+    float32_t damping;
+
+    int16_t yaw;
+    int16_t gimbalPitch;
+    uint8_t turnMode;
+
+    uint8_t reserved[8];
+    uint8_t hasAction;
+    uint16_t actionTimeLimit;
+
+    uint8_t actionNumber : 4;
+    uint8_t actionRepeat : 4;
+
+    uint8_t commandList[16];//! @note issues here list number is 15
+    int16_t commandParameter[16];
+  } WayPointData;
+  ```
+  
   
 
 3. Start Waypoint Task
 
   Developers can start the waypoint task after the previous two steps.
-  
-  /CODE/
 
 4. Other Waypoint APIs
 
@@ -52,7 +89,24 @@ Hotpoint is a functionality that allows the drone to circle around a given point
   
   To initialize the hotpoint task, developers should set the coordinate of point of interest, as well as the radius, velocity and several other parameters, then upload them.
   
-  /CODE/
+  ```c
+  typedef struct HotPointData
+  {
+    uint8_t version;
+
+    float64_t latitude;
+    float64_t longitude;
+    float64_t height;
+
+    float64_t radius;
+    float32_t palstance; // degree
+
+    uint8_t clockwise;
+    uint8_t startPoint;
+    uint8_t yawMode;
+    uint8_t reserved[11];
+  } HotPointData;
+  ```
 
 2. Other Hotpoint APIs
 
@@ -70,13 +124,32 @@ Hotpoint is a functionality that allows the drone to circle around a given point
   
   To initialize the follow me task, developers should set the target position at first.
 
-  /CODE/
+  ```c
+  typedef struct FollowData
+  {
+    uint8_t mode;
+    uint8_t yaw;
+    float64_t latitude;
+    float64_t longitude;
+    uint16_t height;
+    uint16_t angle;
+    uint8_t sensitivity;
+  } FollowData;
+  ```
   
 2. Update Target Position
 
   After starting the follow me task, developers should keep telling the current position of target. i.e. update the position of target. Otherwise the drone will hover in the current position because it believes the target doesn't move.
 
-  /CODE/
+  ```c
+  typedef struct FollowTarget
+  {
+    float64_t latitude;
+    float64_t longitude;
+    uint16_t height;
+    uint16_t angle;
+  } FollowTarget;
+  ```
   
 3. Other Follow Me APIs
 
