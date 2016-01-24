@@ -3,6 +3,13 @@
 All structures and functions are implemented in `DJI_Type.h`and`DJI_API.h`. For more details, please refer source code.
 
 ---
+
+## System Configuration
+
+Before starting with the official library, developers should modify the `DJI_HardDriver` to inheritance the `HardDriver` class,  implement the lock and unlock functions, together with several other virtual functions. Then to create a new API sample with your inheritanced class working as the pointer of hardware interface. And creating two life-long threads(or one, at least) running sendPoll and readPoll functions repeatedly at last. (Note: the frequency should be lower 100Hz)
+
+We provide the example program in Linux and Windows platform with QT and pure terminal running environment.
+
 ## Callback mechanism
 
 For all commands which has return value mentioned in OPEN Protocol, developers can get the return value by callback functions.
