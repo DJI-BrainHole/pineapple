@@ -1,27 +1,33 @@
 # Onboard SDK Programming Guide
 ---
-All structures and functions are implemented in `/TODO/`. For more details, please refer source code.
+All structures and functions are implemented in `DJI_Type.h`and`DJI_API.h`. For more details, please refer source code.
 
 ---
 ## Callback mechanism
 
 For all commands which has return value mentioned in OPEN Protocol, developers can get the return value by callback functions.
 
-Activation function as an example:   
+Activation function in QT sample code as an example:   
 
 1.Define the callback function.  
 
-/TODO/
+```c
+static void activationCallback(CoreAPI* This, Header* header, UserData userData);
+```
 
 2.Pass the name of callback function when you call to activate.
 
-/TODO/
+```c
+api->activate(&data, DJIonboardSDK::activationCallback, this);
+```
 
 3.The meaning of return values(result) is explained in each commands in [OPEN Protocol](OPENProtocol.md#cmd-val--ack-val).
 
 ## Activation
 
-/TODO/
+```c
+api->activate(&data, DJIonboardSDK::activationCallback, this);
+```
 
 ## Obtain/Release Control Authorization
 
@@ -31,12 +37,16 @@ Before obtaining Control Authorization, please ensure that:
 * The IOC mode inside the DJI GO APP is off.
 * The mode selection bar of the remote controller is placed at the F position.
 
-/TODO/
+```c
+api->setControl(true, DJIonboardSDK::setControlCallback, this);
+```
 
 ## Take off, Land and Return to home (RTH)
 The return value of this function please refer to [Request Switch Result](OPENProtocol.md#cmd-id-0x02-request-switch-result)(Below codes do not use callback function).  
 
-/TODO/
+```c
+flight->task(type);
+```
 
 ## Movement Control
 
@@ -52,7 +62,15 @@ We recommend developers to use `HORI_POS` mode in horizontal movement. More deta
 * Only when GPS signal is good (health\_flag >=3)，or when Gudiance system is working properly with Autopilot，horizontal velocity control(HORI_VEL)related control modes can be used.
 
 
-/TODO/
+```c
+FlightData data;
+data.flag = flightFlag;
+data.x = flightx;
+data.y = flighty;
+data.z = flightz;
+data.yaw = flightyaw;
+flight->setFlight(&data);
+```
 
 ## Receive Flight Data
 If developers want to get Flight Data, please check corresponding item in DJI assistant software. And examine the coordinate of part data.
@@ -62,14 +80,51 @@ Developers need to declare correct structure variables to save Flight Data.
 Get quaternion as an example:  
 1. Declare quaternion struction
 
-/TODO/
+```c
+typedef struct QuaternionData
+{
+    float32_t q0;
+    float32_t q1;
+    float32_t q2;
+    float32_t q3;
+} QuaternionData;
+
+QuaternionData q;
+```
 
 
 2、Get the quaternion
 
-/TODO/
+```c
+q = flight->getQuaternion()
+```
 
-Other data types and functions to obtain the corresponding data sent outside from autopilot, please refer `/TODO/`.
+Other data types and functions to obtain the corresponding data sent outside from autopilot, please refer `DJI_Type.h`
+
+```c
+typedef struct BroadcastData
+{
+    unsigned short dataFlag;
+    TimeStampData timeStamp;
+    QuaternionData q;
+    CommonData a;
+    VelocityData v;
+    CommonData w;
+    PossitionData pos;
+    MagnetData mag;
+    RadioData rc;
+    GimbalData gimbal;
+    FlightStatus status;
+    BatteryData battery;
+    CtrlInfoData ctrlInfo;
+
+    //! @note these variables are not send from FMU,
+    //! just a record for user.
+    uint8_t controlStatus;
+    uint8_t activation;
+} BroadcastData;
+
+```
 
 ## GPS to North-East Coordinate
 Convert GPS to North-East Coordinate. (GPS in radian，North-East Coordinate in meter)
@@ -112,10 +167,16 @@ void update_offset()
     offset_y = target_y - current_y;
 }
 
-
 /* Command thread */
 
-/TODO/
+FlightData data;
+data.flag = 0x90;
+data.x = offset_x;
+data.y = offset_y;
+data.z = target_z;
+data.yaw = target_yaw;
+flight->setFlight(&data);
+
 ~~~
 
 
